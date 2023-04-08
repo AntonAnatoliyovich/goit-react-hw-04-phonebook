@@ -2,7 +2,6 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import css from './Phonebook.module.css';
 
-
 export class Filter extends Component {
     render() {
         const { filter, addFilter } = this.props;
