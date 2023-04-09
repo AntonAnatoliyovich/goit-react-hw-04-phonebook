@@ -1,24 +1,23 @@
 import { useState, useEffect } from "react";
-import { ContactForm } from "./Phonebook/ContactForm";
+import ContactForm from "./Phonebook/ContactForm";
 import { ContactList } from "./Phonebook/ContactList";
-import { Filter } from "./Phonebook/Filter";
+import Filter from "./Phonebook/Filter";
 import css from './Phonebook/Phonebook.module.css';
 
 const App = () =>  {
   let [contacts, setContacts] = useState([]);
   let [filter, setFilter] = useState('');
   const localStorageKey = 'addedContacts';
-  let contactsArray = [];
 
   useEffect(() => {
-    const contactsArray = JSON.parse(localStorage.getItem(localStorageKey)) || []
-    if(contactsArray.length > 0) {
-      setContacts([...contactsArray])
+    let contacts = JSON.parse(localStorage.getItem(localStorageKey)) || []
+    if(contacts.length > 0) {
+      setContacts([...contacts])
     }
   }, [])
 
   const addContact = event => {
-    contactsArray = JSON.parse(localStorage.getItem(localStorageKey)) || []
+    setContacts(JSON.parse(localStorage.getItem(localStorageKey)) || [])
     const loweredCase = event.name.toLowerCase().trim();
 
     const exists = contacts.some(
@@ -28,9 +27,8 @@ const App = () =>  {
     if (exists) {
       alert(`${event.name} is already in contacts!`);
     } else {
-      contactsArray.push(event)
-      localStorage.setItem(localStorageKey, JSON.stringify(contactsArray))
       setContacts(contacts = [...contacts, event])
+      localStorage.setItem(localStorageKey, JSON.stringify(contacts))
     }
   };
 
@@ -45,9 +43,8 @@ const App = () =>  {
   };
 
   const deleteContact = id => {
-    contactsArray = contactsArray.filter(contact => contact.id !== id)
-    localStorage.setItem(localStorageKey, JSON.stringify(contactsArray))
     setContacts(contacts = contacts.filter(contact => contact.id !== id))
+    localStorage.setItem(localStorageKey, JSON.stringify(contacts))
   }
 
   return (
